@@ -20,4 +20,16 @@ class Escape
         }
         return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
     }
+
+    /**
+     * @param $string
+     * @return string
+     */
+    public static function d($string)
+    {
+        if (!is_string($string)) {
+            return $string;
+        }
+        return htmlspecialchars_decode($string);
+    }
 }
