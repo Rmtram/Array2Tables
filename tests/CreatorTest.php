@@ -95,7 +95,7 @@ class CreatorTest extends \PHPUnit\Framework\TestCase
     public function testHtml($items, $config = null, bool $throwable = false)
     {
         try {
-            $this->assertMatchesHtmlSnapshot(Creator::make($items)->html($config)->render());
+            $this->assertMatchesSnapshot(Creator::make($items)->html($config)->render());
         } catch (\Throwable $e) {
             $this->assertTrue($throwable, $e);
         }
