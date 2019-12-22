@@ -13,11 +13,12 @@ class Config
      * @var array
      */
     private $attributes = [
-        'table' => [],
-        'thead' => [],
-        'tbody' => [],
-        'th'    => [],
-        'td'    => []
+        'table'   => [],
+        'thead'   => [],
+        'tbody'   => [],
+        'th'      => [],
+        'td'      => [],
+        'caption' => [],
     ];
 
     /**

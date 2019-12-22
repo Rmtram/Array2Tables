@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Rmtram\Array2Tables\Tables\Html;
 
+use Rmtram\Array2Tables\Escape;
 use Rmtram\Array2Tables\Tables\TableInterface;
 
 /**
@@ -45,7 +46,7 @@ class Table implements TableInterface
     /**
      * @param array $headers
      * @param array $values
-     * @return \DOMElement
+     * @return \DOMDocument
      */
     private function doc(array $headers, array $values): \DOMDocument
     {
@@ -53,10 +54,27 @@ class Table implements TableInterface
         $table = $this->createElement($document, 'table');
         $thead = $this->createHeader($document, $headers);
         $tbody = $this->createBody($document, $values);
+        $caption = $this->createCaption($document);
+        if ($caption !== null) {
+            $table->appendChild($caption);
+        }
         $table->appendChild($thead);
         $table->appendChild($tbody);
         $document->appendChild($table);
         return $document;
+    }
+
+    /**
+     * @param \DOMDocument $document
+     * @return \DOMElement|null
+     */
+    private function createCaption(\DOMDocument $document): ?\DOMElement
+    {
+        $caption = $this->config->getCaption();
+        if ($caption === null) {
+            return null;
+        }
+        return $this->createElement($document, 'caption', $this->h($caption));
     }
 
     /**
@@ -68,7 +86,7 @@ class Table implements TableInterface
     {
         $thead = $this->createElement($document, 'thead');
         foreach ($headers as $text) {
-            $th = $this->createElement($document, isset($th) ? $th : 'th', $text);
+            $th = $this->createElement($document, isset($th) ? $th : 'th', $this->h($text));
             $thead->appendChild($th);
         }
         return $thead;
@@ -85,7 +103,7 @@ class Table implements TableInterface
         foreach ($values as $vs) {
             $tr = $this->createElement($document, 'tr');
             foreach ($vs as $text) {
-                $td = $this->createElement($document, isset($td) ? $td : 'td', $text);
+                $td = $this->createElement($document, isset($td) ? $td : 'td', $this->h($text));
                 $tr->appendChild($td);
             }
             $tbody->appendChild($tr);
@@ -127,7 +145,19 @@ class Table implements TableInterface
             if (is_array($val)) {
                 $val = implode("\x20", $val);
             }
-            $element->setAttribute($name, $val);
+            $element->setAttribute($name, $this->h($val));
         }
+    }
+
+    /**
+     * @param $string
+     * @return string
+     */
+    private function h($string)
+    {
+        if ($this->config->getEscape()) {
+            return Escape::h($string);
+        }
+        return $string;
     }
 }
