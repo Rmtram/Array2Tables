@@ -32,7 +32,11 @@ class Table implements TableInterface
      */
     public function create(array $headers, array $values): string
     {
-        return $this->doc($headers, $values)->saveHTML();
+        $html = $this->doc($headers, $values)->saveHTML();
+        if ($this->config->getEscape() === true) {
+            return $html;
+        }
+        return Escape::d($html);
     }
 
     /**
@@ -74,7 +78,7 @@ class Table implements TableInterface
         if ($caption === null) {
             return null;
         }
-        return $this->createElement($document, 'caption', $this->h($caption));
+        return $this->createElement($document, 'caption', $caption);
     }
 
     /**
@@ -86,7 +90,7 @@ class Table implements TableInterface
     {
         $thead = $this->createElement($document, 'thead');
         foreach ($headers as $text) {
-            $th = $this->createElement($document, isset($th) ? $th : 'th', $this->h($text));
+            $th = $this->createElement($document, isset($th) ? $th : 'th', $text);
             $thead->appendChild($th);
         }
         return $thead;
@@ -99,11 +103,11 @@ class Table implements TableInterface
      */
     private function createBody(\DOMDocument $document, array $values): \DOMElement
     {
-        $tbody = $this->createElement($document, 'thead');
+        $tbody = $this->createElement($document, 'tbody');
         foreach ($values as $vs) {
             $tr = $this->createElement($document, 'tr');
             foreach ($vs as $text) {
-                $td = $this->createElement($document, isset($td) ? $td : 'td', $this->h($text));
+                $td = $this->createElement($document, isset($td) ? $td : 'td', $text);
                 $tr->appendChild($td);
             }
             $tbody->appendChild($tr);
@@ -145,19 +149,10 @@ class Table implements TableInterface
             if (is_array($val)) {
                 $val = implode("\x20", $val);
             }
-            $element->setAttribute($name, $this->h($val));
+            if (is_numeric($val)) {
+                $val = (string) $val;
+            }
+            $element->setAttribute($name, $val);
         }
-    }
-
-    /**
-     * @param $string
-     * @return string
-     */
-    private function h($string)
-    {
-        if ($this->config->getEscape()) {
-            return Escape::h($string);
-        }
-        return $string;
     }
 }
