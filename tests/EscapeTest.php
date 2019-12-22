@@ -6,7 +6,6 @@ use Rmtram\Array2Tables\Escape;
 
 class EscapeTest extends \PHPUnit\Framework\TestCase
 {
-
     public function providerTestH()
     {
         return [
