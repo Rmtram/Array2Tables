@@ -15,11 +15,6 @@ class Creator
     private $items;
 
     /**
-     * @var array
-     */
-    private $orders = [];
-
-    /**
      * @param array $items
      * @return static
      */
@@ -39,22 +34,23 @@ class Creator
     }
 
     /**
-     * @param array $orders
-     * @return $this
-     */
-    public function order(array $orders): self
-    {
-        $this->orders = $orders;
-        return $this;
-    }
-
-    /**
      * @param Tables\Html\Config|null $config
      * @return Output
      */
     public function html(?Tables\Html\Config $config = null): Output
     {
         $table = new Tables\Html\Table($config);
-        return new Output($table, ['hoge', 'fuga'], [[1, 2], [11, 22]]);
+        return new Output($table, $this->keys(), $this->items);
+    }
+
+    /**
+     * @return array
+     */
+    private function keys(): array
+    {
+        if (empty($this->items)) {
+            return [];
+        }
+        return array_keys(current($this->items));
     }
 }
