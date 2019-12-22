@@ -16,8 +16,9 @@
   },
   "scripts": {
     "test": "./vendor/bin/phpunit",
+    "test:reset": "./vendor/bin/phpunit -d --update-snapshots",
     "lint": "./vendor/bin/php-cs-fixer fix --dry-run --diff -v",
-    "lintfix": "./vendor/bin/php-cs-fixer fix --diff -v"
+    "lint:fix": "./vendor/bin/php-cs-fixer fix --diff -v"
   },
   "license": "MIT",
   "authors": [
@@ -27,11 +28,13 @@
     }
   ],
   "require": {
-    "php": ">=7.2"
+    "php": ">=7.2",
+    "rmtram/sorter": "^2.0"
   },
   "require-dev": {
     "phpunit/phpunit": "~8.0",
-    "friendsofphp/php-cs-fixer": "^2.16"
+    "friendsofphp/php-cs-fixer": "^2.16",
+    "spatie/phpunit-snapshot-assertions": "^3.0"
   },
   "autoload": {
     "psr-4": {
