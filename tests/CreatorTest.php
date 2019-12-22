@@ -100,4 +100,26 @@ class CreatorTest extends \PHPUnit\Framework\TestCase
             $this->assertTrue($throwable, $e);
         }
     }
+
+    public function providerTestMarkdown()
+    {
+        return [
+            [[['id' => 1, 'name' => 'hoge']]]
+        ];
+    }
+
+    /**
+     * @param $items
+     * @param null $config
+     * @param bool $throwable
+     * @dataProvider providerTestMarkdown
+     */
+    public function testMarkdown($items, $config = null, $throwable = false)
+    {
+        try {
+            $this->assertMatchesSnapshot(Creator::make($items)->markdown()->render());
+        } catch (\Throwable $e) {
+            $this->assertTrue($throwable, $e);
+        }
+    }
 }

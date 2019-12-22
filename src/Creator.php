@@ -44,6 +44,15 @@ class Creator
     }
 
     /**
+     * @return Output
+     */
+    public function markdown(): Output
+    {
+        $table = new Tables\Markdown\Table();
+        return new Output($table, $this->keys(), $this->items);
+    }
+
+    /**
      * @return array
      */
     private function keys(): array
