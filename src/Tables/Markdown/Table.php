@@ -5,7 +5,6 @@ namespace Rmtram\Array2Tables\Tables\Markdown;
 
 use Rmtram\Array2Tables\Escape;
 use Rmtram\Array2Tables\Tables\TableInterface;
-use SplFileObject;
 
 /**
  * Class Table
