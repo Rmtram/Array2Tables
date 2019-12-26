@@ -108,7 +108,7 @@ class Config
     /**
      * @return bool
      */
-    public function getEscape(): bool
+    public function isEscape(): bool
     {
         return $this->escape;
     }

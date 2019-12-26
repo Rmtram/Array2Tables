@@ -44,15 +44,18 @@ class Creator
     }
 
     /**
+     * @param Tables\Markdown\Config|null $config
      * @return Output
      */
-    public function markdown(): Output
+    public function markdown(?Tables\Markdown\Config $config = null): Output
     {
-        $table = new Tables\Markdown\Table();
+        $table = new Tables\Markdown\Table($config);
         return new Output($table, $this->keys(), $this->items);
     }
 
     /**
+     * Get item keys.
+     *
      * @return array
      */
     private function keys(): array
