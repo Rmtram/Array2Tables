@@ -33,7 +33,7 @@ class Table implements TableInterface
     public function create(array $headers, array $values): string
     {
         $html = $this->doc($headers, $values)->saveHTML();
-        if ($this->config->getEscape() === true) {
+        if ($this->config->isEscape() === true) {
             return $html;
         }
         return Escape::d($html);
@@ -44,7 +44,8 @@ class Table implements TableInterface
      */
     public function save(string $filePath, array $headers, array $values): bool
     {
-        return $this->doc($headers, $values)->saveHTMLFile($filePath) !== false;
+        $html = $this->create($headers, $values);
+        return (bool)file_put_contents($filePath, $html);
     }
 
     /**
@@ -89,6 +90,7 @@ class Table implements TableInterface
     private function createHeader(\DOMDocument $document, array $headers): \DOMElement
     {
         $thead = $this->createElement($document, 'thead');
+        $th = null;
         foreach ($headers as $text) {
             $th = $this->createElement($document, isset($th) ? $th : 'th', $text);
             $thead->appendChild($th);
@@ -106,6 +108,7 @@ class Table implements TableInterface
         $tbody = $this->createElement($document, 'tbody');
         foreach ($values as $vs) {
             $tr = $this->createElement($document, 'tr');
+            $td = null;
             foreach ($vs as $text) {
                 $td = $this->createElement($document, isset($td) ? $td : 'td', $text);
                 $tr->appendChild($td);
