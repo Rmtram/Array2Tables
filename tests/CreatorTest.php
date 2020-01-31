@@ -227,7 +227,7 @@ class CreatorTest extends \PHPUnit\Framework\TestCase
     {
         try {
             $this->assertMatchesSnapshot(Creator::make($items)->ascii()->render());
-        } catch(\Throwable $e) {
+        } catch (\Throwable $e) {
             $this->assertTrue($throwable, $e);
         }
     }
