@@ -187,4 +187,48 @@ class CreatorTest extends \PHPUnit\Framework\TestCase
             $this->assertTrue($throwable, $e);
         }
     }
+
+    public function providerTestAscii()
+    {
+        return [
+            'empty' => [
+                []
+            ],
+            'one' => [
+                [
+                    ['id' => 1]
+                ]
+            ],
+            'different_attr_for_last_row' => [
+                [
+                    ['id' => 1],
+                    ['id' => 2, 'name' => 'a']
+                ]
+            ],
+            'different_attr_for_first_row' => [
+                [
+                    ['id' => 1, 'name' => 'a'],
+                    ['id' => 2]
+                ]
+            ],
+            'multibyte' => [
+                [
+                    ['name' => 'ああああ', 'address' => 'あああああaaa'],
+                    ['name' => 'いいいいいいい', 'address' => 'いいいいいいいいiiii'],
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * @dataProvider providerTestAscii
+     */
+    public function testAscii($items, $throwable = false)
+    {
+        try {
+            $this->assertMatchesSnapshot(Creator::make($items)->ascii()->render());
+        } catch (\Throwable $e) {
+            $this->assertTrue($throwable, $e);
+        }
+    }
 }
