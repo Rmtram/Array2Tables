@@ -40,7 +40,7 @@ class Creator
     public function html(?Tables\Html\Config $config = null): Output
     {
         $table = new Tables\Html\Table($config);
-        return new Output($table, $this->keys(), $this->items);
+        return $this->out($table);
     }
 
     /**
@@ -50,6 +50,24 @@ class Creator
     public function markdown(?Tables\Markdown\Config $config = null): Output
     {
         $table = new Tables\Markdown\Table($config);
+        return $this->out($table);
+    }
+
+    /**
+     * @return Output
+     */
+    public function ascii(): Output
+    {
+        $table = new Tables\Ascii\Table();
+        return $this->out($table);
+    }
+
+    /**
+     * @param Tables\TableInterface $table
+     * @return Output
+     */
+    private function out(Tables\TableInterface $table): Output
+    {
         return new Output($table, $this->keys(), $this->items);
     }
 
